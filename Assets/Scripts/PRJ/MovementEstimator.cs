@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Linq;
+using UnityEngine;
 
 // Estimate the motion of an object and access it from other scripts
 public class MovementEstimator : MonoBehaviour
@@ -9,7 +10,6 @@ public class MovementEstimator : MonoBehaviour
 
     private float[] timeSamples;
     private Vector3[] positionSamples;
-    private Quaternion[] rotationSamples;
 
     public Vector3 linearVelocity { get; private set; }
 
@@ -19,13 +19,11 @@ public class MovementEstimator : MonoBehaviour
         // Initialize sample arrays
         timeSamples = new float[numSamples];
         positionSamples = new Vector3[numSamples];
-        rotationSamples = new Quaternion[numSamples];
 
         for(int i = 0; i < numSamples; i++)
         {
             timeSamples[i] = i/60f;
             positionSamples[i] = this.gameObject.transform.position;
-            rotationSamples[i] = this.gameObject.transform.rotation;
         }
     }
 
@@ -37,16 +35,14 @@ public class MovementEstimator : MonoBehaviour
         {
             timeSamples[i] = timeSamples[i + 1];
             positionSamples[i] = positionSamples[i + 1];
-            rotationSamples[i] = rotationSamples[i + 1];
         }
 
         // Record current transform
         timeSamples[numSamples - 1] = Time.time;
         positionSamples[numSamples - 1] = this.gameObject.transform.position;
-        rotationSamples[numSamples - 1] = this.gameObject.transform.rotation;
 
-        // Estimate linear and angular velocity
-        MathUtils.OLS(timeSamples, positionSamples, out Vector3 linearVelocity_, out _);
+        // Estimate linear velocity
+        MathUtils.OLS(timeSamples.Select(x=>x-Time.time), positionSamples, out Vector3 linearVelocity_, out _);
         linearVelocity = linearVelocity_;
     }
 }
