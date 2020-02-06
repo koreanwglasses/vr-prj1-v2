@@ -5,8 +5,11 @@ using UnityEngine;
 public class SmearController : MonoBehaviour
 {
     [Header("References")]
-    [Tooltip("Control")]
     public GameObject control;
+
+    [Header("Parameters")]
+    public Vector3 baseScale = new Vector3(0, 0, 0);
+    public Vector3 scaleInfluence = new Vector3(1,1,1);
 
     private MovementEstimator movementEstimator;
 
@@ -19,7 +22,10 @@ public class SmearController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Vector3 v2 = Vector3.Scale(movementEstimator.linearVelocity, movementEstimator.linearVelocity);
-        this.gameObject.transform.localScale = new Vector3(1, 1, 1) + 0.1f * v2;
+        Vector3 v = movementEstimator.linearVelocity;
+        //Vector3 v2 = Vector3.Scale(movementEstimator.linearVelocity, movementEstimator.linearVelocity);
+
+        this.gameObject.transform.LookAt(this.gameObject.transform.position + v);
+        this.gameObject.transform.localScale = baseScale + v.sqrMagnitude * scaleInfluence;
     }
 }
