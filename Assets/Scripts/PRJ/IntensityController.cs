@@ -15,20 +15,26 @@ public class IntensityController : MonoBehaviour
     private Light lightComponent;
     private float baseIntensity;
     private MovementEstimator movementEstimator;
+    private GlobalControls globalControls = null;
 
 
     // Start is called before the first frame update
     void Start()
     {
-        this.lightComponent = this.gameObject.GetComponent<Light>();
-        this.baseIntensity = this.lightComponent.intensity;
+        lightComponent = this.gameObject.GetComponent<Light>();
+        baseIntensity = this.lightComponent.intensity;
         movementEstimator = control.GetComponent<MovementEstimator>();    
+        globalControls = this.gameObject.GetComponentInParent<GlobalControls>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        float v2 = movementEstimator.linearVelocity.sqrMagnitude;
+        Vector3 v = movementEstimator.linearVelocity;
+        if (globalControls) v *= globalControls.sensitivity;
+
+        float v2 = v.sqrMagnitude;
+
         lightComponent.intensity = baseIntensity + intensityInfluence * v2;
         
         if(gradientScale > 0)

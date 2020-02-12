@@ -10,7 +10,7 @@ public class MovementEstimator : MonoBehaviour
 
     private float[] timeSamples;
     private Vector3[] positionSamples;
-
+   
     public Vector3 linearVelocity { get; private set; }
 
     // Start is called before the first frame update

@@ -10,18 +10,21 @@ public class SmearController : MonoBehaviour
     [Header("Parameters")]
     public Vector3 scaleInfluence = new Vector3(1,1,1);
     public bool rotate = true;
+    public bool uniform = false;
 
     [Header("Additional Options")]
     public Matrix4x4 inputTransform = Matrix4x4.identity;
 
     private Vector3 baseScale;
     private MovementEstimator movementEstimator;
+    private GlobalControls globalControls = null;
 
     // Start is called before the first frame update
     void Start()
     {
         baseScale = this.gameObject.transform.localScale;
-        movementEstimator = control.GetComponent<MovementEstimator>();    
+        movementEstimator = control.GetComponent<MovementEstimator>();
+        globalControls = this.gameObject.GetComponentInParent<GlobalControls>();
     }
 
     // Different behavior of scaling for negative/non-negative z 
@@ -51,13 +54,18 @@ public class SmearController : MonoBehaviour
     void Update()
     {
         Vector3 v = inputTransform * movementEstimator.linearVelocity;
+        if (globalControls) v *= globalControls.sensitivity;
 
         if (rotate)
         {
-            this.gameObject.transform.localScale = DualScAddV(baseScale, v.sqrMagnitude, scaleInfluence);
             this.gameObject.transform.LookAt(this.gameObject.transform.position + v);
         }
-        else
+
+        if (uniform)
+        {
+            this.gameObject.transform.localScale = DualScAddV(baseScale, v.sqrMagnitude, scaleInfluence);
+        }
+        else 
         {
             this.gameObject.transform.localScale = DualScAddV(baseScale, Vector3.Scale(v, v), scaleInfluence);
         }
