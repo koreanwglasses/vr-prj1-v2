@@ -1587,6 +1587,7 @@ MonoBehaviour:
   control: {fileID: 1421698801}
   influence: 0.1
   maxVolume: 1
+  globalControl: {fileID: 340819787}
 --- !u!4 &303851374 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4418322236260168, guid: 3f3e0a826fac944cda09b256b8fea9b3,

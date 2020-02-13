@@ -8,6 +8,8 @@ public class AudioModulator : MonoBehaviour
     public float influence = 0.1f;
     public float maxVolume = 1;
 
+    public GameObject globalControl = null;
+
     private AudioSource audioSource;
     private MovementEstimator movementEstimator;
     private GlobalControls globalControls;
@@ -17,7 +19,15 @@ public class AudioModulator : MonoBehaviour
     {
         audioSource = this.gameObject.GetComponent<AudioSource>();
         movementEstimator = control.GetComponent<MovementEstimator>();
-        globalControls = this.gameObject.GetComponentInParent<GlobalControls>();
+
+        if (globalControl)
+        {
+            globalControls = globalControl.GetComponent<GlobalControls>();
+        }
+        else
+        {
+            globalControls = this.gameObject.GetComponentInParent<GlobalControls>();
+        }
     }
 
     // Update is called once per frame
