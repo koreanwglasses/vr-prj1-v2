@@ -148,6 +148,7 @@ GameObject:
   - component: {fileID: 114635138843113598}
   - component: {fileID: 114946724028192108}
   - component: {fileID: 114806786637433156}
+  - component: {fileID: 3712820853608134884}
   m_Layer: 0
   m_Name: FPSController
   m_TagString: Untagged
@@ -415,10 +416,26 @@ MonoBehaviour:
   m_GameObject: {fileID: 1432375978432472}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 42aa02bd7bb7c1040977d6b9c0385afd, type: 3}
+  m_Script: {fileID: 11500000, guid: 745e765d37eafd245899e8c83c4fb216, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  projectionRoot: {fileID: 4491029114157432}
+  pointerRoot: {fileID: 0}
+  projectionRoot: {fileID: 0}
+  infotext: {fileID: 0}
+--- !u!114 &3712820853608134884
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1432375978432472}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7646074898c7e6144b2765436a089bf6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  wandTransform: {fileID: 0}
+  speed: 1
 --- !u!1 &1514508667635470
 GameObject:
   m_ObjectHideFlags: 0

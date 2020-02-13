@@ -5,11 +5,13 @@ using System.Collections.Generic;
 
 public class OSCEventListener : MonoBehaviour {
 	
-	//PointerControl pointerRoot;
+	public Transform pointerRoot;
 	public Transform projectionRoot;
-
+	public Text infotext;
 	private static OSCEventListener osc;
+	
 	public static OSCEventListener OSC
+	
 	{
 		get
 		{
@@ -26,6 +28,7 @@ public class OSCEventListener : MonoBehaviour {
 		//projectionRoot = GameObject.Find("ProjectionRoot").transform;
 		//pointerRoot = GameObject.Find("PointerRoot").GetComponent<PointerControl>();
 		DontDestroyOnLoad(gameObject);
+		infotext.text = "Starting OSC Event Listener...";
 	}
 
 	// Update is called once per frame
@@ -42,25 +45,31 @@ public class OSCEventListener : MonoBehaviour {
 		*/
 		OSCHandler.Instance.UpdateLogs();
 		List<string> server_messages = OSCHandler.Instance.Servers["HeadTracker"].log;
-		foreach (string msg in server_messages){
-			//Debug.Log (msg);
-			//parse message and update tracker position
-			string[] words = msg.Split(' ');
-				
+        foreach (string msg in server_messages)
+        {
+            //Debug.Log (msg);
+            //parse message and update tracker position
+            string[] words = msg.Split(' ');
+			infotext.text=msg;
 
-			//convert Vicon coordinates to Unity coordinates
-			projectionRoot.localPosition = new Vector3(float.Parse(words[5]),float.Parse(words[7]), float.Parse(words[6]));
+            //convert Vicon coordinates to Unity coordinates
+            projectionRoot.localPosition = new Vector3(float.Parse(words[5]), float.Parse(words[7]), float.Parse(words[6]));
+			
 
-			Vector3 pos = projectionRoot.localPosition;
-			pos *= 3.28084f;
-			//GameObject.FindObjectOfType<Text>().text = pos.ToString();
-			//14, 15, 16 = H, P, R
-			// rotate X = pitch
-			// rotate Y = heading
-			// rotate Z = roll
-			//if (pointerRoot)
-			//	pointerRoot.UpdatePointer (float.Parse(words[11]), float.Parse(words[13]), float.Parse(words[12]), float.Parse(words[15]), float.Parse(words[14]), float.Parse(words[16]));
-		}
+            Vector3 pos = projectionRoot.localPosition;
+            pos *= 3.28084f;
+            //GameObject.FindObjectOfType<Text>().text = pos.ToString();
+            //14, 15, 16 = H, P, R
+            // rotate X = pitch
+            // rotate Y = heading
+            // rotate Z = roll
+            if (pointerRoot)
+            {
+                pointerRoot.localPosition = new Vector3(float.Parse(words[11]), float.Parse(words[13]), float.Parse(words[12]));
+                pointerRoot.localEulerAngles = new Vector3(-float.Parse(words[15]), -float.Parse(words[14]), -float.Parse(words[16]));
+
+            }
+        }
 	}
 
 }
